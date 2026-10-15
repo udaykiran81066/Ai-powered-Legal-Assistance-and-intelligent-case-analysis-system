@@ -45,20 +45,26 @@ def chunk_by_section(act: str, pages: list[tuple[int, str]]) -> list[Chunk]:
     def num(sec: str) -> int:
         return int(re.match(r"\d+", sec).group())
 
+    # Acts often print a table of contents (the same numbers, tiny bodies) before the
+    # body. A sequence restart at 1-3 begins a new run; per section we later keep the
+    # candidate with the longest body, which drops the TOC entries.
     starts, last = [], 0
     for m in SECTION_RE.finditer(full):
         n = num(m.group(1))
-        if last < n <= last + 5 or (last == 0 and n <= 3):
+        if last < n <= last + 5 or (n <= 3 and last > 10):
             starts.append((m.start(), m.end(), m.group(1)))
             last = n
         elif n == last and m.group(1)[-1:].isalpha():
             starts.append((m.start(), m.end(), m.group(1)))
 
-    chunks = []
+    best: dict[str, Chunk] = {}
     for i, (s, e, sec) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else len(full)
         body = full[e:end].strip()
         if len(body) < MIN_CHARS:
             continue
-        chunks.append(Chunk(act, sec, _title(body), page_at(s), re.sub(r"[ \t]+", " ", body)))
+        chunk = Chunk(act, sec, _title(body), page_at(s), re.sub(r"[ 	]+", " ", body))
+        if sec not in best or len(chunk.text) > len(best[sec].text):
+            best[sec] = chunk
+    chunks = list(best.values())
     return chunks
