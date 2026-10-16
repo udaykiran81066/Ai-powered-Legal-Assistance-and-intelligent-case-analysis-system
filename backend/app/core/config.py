@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./legal_rag.db"
     chroma_dir: str = "./chroma_db"
     anthropic_api_key: str = ""
-    embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_model: str = "BAAI/bge-base-en-v1.5"
 
 
 settings = Settings()

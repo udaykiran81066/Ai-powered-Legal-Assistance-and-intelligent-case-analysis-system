@@ -2,7 +2,7 @@ import chromadb
 
 from app.core.config import settings
 from app.ingestion.chunker import Chunk
-from app.ingestion.embedder import embed
+from app.ingestion.embedder import embed, embed_query
 
 COLLECTION = "bare_acts"
 
@@ -28,7 +28,7 @@ def add_chunks(chunks: list[Chunk], batch: int = 64) -> None:
 
 
 def search(query: str, k: int = 5) -> list[dict]:
-    res = _collection().query(query_embeddings=embed([query]), n_results=k)
+    res = _collection().query(query_embeddings=[embed_query(query)], n_results=k)
     return [
         {**meta, "text": doc, "distance": dist}
         for doc, meta, dist in zip(
