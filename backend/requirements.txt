@@ -9,3 +9,5 @@ sentence-transformers
 anthropic
 pytest
 httpx
+langchain-core
+langchain-anthropic
