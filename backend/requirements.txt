@@ -11,3 +11,8 @@ pytest
 httpx
 langchain-core
 langchain-anthropic
+alembic
+psycopg2-binary
+PyJWT
+bcrypt
+email-validator

@@ -36,6 +36,7 @@ cd backend
 python -m venv .venv && .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
+alembic upgrade head      # create DB tables
 uvicorn app.main:app --reload
 pytest
 ```
@@ -47,7 +48,7 @@ Put statute PDFs in `data/raw_pdfs/` (gitignored), then run `python scripts/inge
 ## Roadmap
 
 - [x] Phase 0 — Repo & skeleton
-- [ ] Phase 1 — Ingestion pipeline (PDF → chunks → embeddings → Chroma)
-- [ ] Phase 2 — Retrieval + LLM answer chain with citations
-- [ ] Phase 3 — Users, cases, query history
+- [x] Phase 1 — Ingestion pipeline (PDF → chunks → embeddings → Chroma)
+- [x] Phase 2 — Retrieval + LLM answer chain with citations
+- [x] Phase 3 — Users (JWT auth), cases, query history (Postgres + Alembic)
 - [ ] Phase 4 — React frontend

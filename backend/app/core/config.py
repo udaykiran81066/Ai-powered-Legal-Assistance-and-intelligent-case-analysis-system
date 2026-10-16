@@ -14,6 +14,9 @@ class Settings(BaseSettings):
     # Max cosine similarity below which the answer is flagged low-confidence. NOT yet
     # tuned for bge-base: calibrate on scripts/eval_retrieval.py scores before trusting.
     similarity_threshold: float = 0.5
+    # JWT signing key: override via SECRET_KEY in any real deployment.
+    secret_key: str = "dev-only-change-me-use-32+-bytes-in-prod"
+    access_token_minutes: int = 60
 
 
 settings = Settings()
